@@ -8,7 +8,7 @@ services:
 
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "Batchum123!"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD}
 
     ports:
       - "1433:1433"
@@ -21,11 +21,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 30s  
+      start_period: 30s
+
 
   api:
     build: .
-    container_name: simpleproductapi
+    container_name: gymmanagementapi
 
     ports:
       - "5000:8080"
@@ -36,6 +37,9 @@ services:
 
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=${DB_NAME};User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;"
+
 
 volumes:
   sql_data:
